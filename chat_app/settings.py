@@ -129,3 +129,31 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# https://xxx-cook-book.gitbooks.io/django-cook-book/content/Logs/Handlers/FileHandler/timed-rotating-file-handler.html
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        }
+    },
+    'handlers': {
+        'logit': {
+            'level': 'INFO',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': 'logs/chat_application.log',
+            'when': 'midnight',
+            'backupCount': 10,
+            'formatter': 'verbose',
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['logit'],
+            'level': 'INFO',
+            'propagate': True,
+        }
+    },
+}
