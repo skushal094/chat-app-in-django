@@ -130,6 +130,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# https://xxx-cook-book.gitbooks.io/django-cook-book/content/Logs/Handlers/FileHandler/timed-rotating-file-handler.html
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
