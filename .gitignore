@@ -5,6 +5,7 @@
 ### Django ###
 logs/
 *.log
+*.log.*
 *.pot
 *.pyc
 __pycache__/
