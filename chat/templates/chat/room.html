@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,10 +10,12 @@
     <input id="chat-message-input" type="text" size="100"><br>
     <input id="chat-message-submit" type="button" value="Send">
     {{ room_name|json_script:"room-name" }}
+    <script src="{% static 'js/reconnecting-websocket.js' %}"></script>
     <script>
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        var username = "{{ username }}";
 
-        const chatSocket = new WebSocket(
+        const chatSocket = new ReconnectingWebSocket(
             'ws://'
             + window.location.host
             + '/ws/chat/'
@@ -20,9 +23,19 @@
             + '/'
         );
 
+        chatSocket.onopen = function(e) {
+          fetchMessages();
+        }
+
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').value += (data.message + '\n');
+            if (data['command'] === 'messages') {
+                for (let i=0; i<data['messages'].length; i++) {
+                    createMessage(data['messages'][i]);
+                }
+            } else if (data['command'] === 'new_message'){
+                createMessage(data['message']);
+            }
         };
 
         chatSocket.onclose = function(e) {
@@ -37,13 +50,39 @@
         };
 
         document.querySelector('#chat-message-submit').onclick = function(e) {
-            const messageInputDom = document.querySelector('#chat-message-input');
+            var messageInputDom = document.getElementById('chat-message-input');
             const message = messageInputDom.value;
             chatSocket.send(JSON.stringify({
-                'message': message
+                'command': 'new_message',
+                'message': message,
+                'from': username
             }));
             messageInputDom.value = '';
         };
+
+        function fetchMessages() {
+          chatSocket.send(JSON.stringify({'command': 'fetch_messages' }));
+        }
+
+        function createMessage(data) {
+            // var author = data['author'];
+            var message = data['content'];
+            document.querySelector('#chat-log').value += (message + '\n');
+            /*var msgListTag = document.createElement('li');
+            var imgTag = document.createElement('img');
+            var pTag = document.createElement('p');
+            pTag.textContent = data.content;
+            imgTag.src = 'http://emilcarlsson.se/assets/mikeross.png';
+
+            if (author === username) {
+            msgListTag.className = 'sent';
+            } else {
+            msgListTag.className = 'replies';
+            }
+            msgListTag.appendChild(imgTag);
+            msgListTag.appendChild(pTag);
+            document.querySelector('#chat-log').appendChild(msgListTag);*/
+        }
     </script>
 </body>
 </html>
