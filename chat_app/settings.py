@@ -131,6 +131,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+LOGIN_URL = '/auth/login'
+LOGIN_REDIRECT_URL = "/chat"
+
 # https://xxx-cook-book.gitbooks.io/django-cook-book/content/Logs/Handlers/FileHandler/timed-rotating-file-handler.html
 LOGGING = {
     'version': 1,
