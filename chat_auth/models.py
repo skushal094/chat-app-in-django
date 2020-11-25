@@ -5,6 +5,10 @@ from django.contrib.auth.models import (
 
 
 class UserManager(BaseUserManager):
+    """
+    This is the manager that is being used in the Custom User model.
+    """
+
     def create_user(self, email, username, password=None):
         """
         Creates and saves a User with the given email and password.
@@ -58,6 +62,10 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
+    """
+    Custom User model with added fields
+    """
+
     email = models.EmailField(
         verbose_name='email address',
         max_length=255,
@@ -84,14 +92,21 @@ class User(AbstractBaseUser):
     objects = UserManager()
 
     def get_full_name(self):
-        # The user is identified by their email address
-        return self.email
+        """
+        Provide user's full name.
+        """
+        return "{} {}".format(self.first_name, self.last_name)
 
     def get_short_name(self):
-        # The user is identified by their email address
-        return self.email
+        """
+        The user is identified by their username
+        """
+        return self.username
 
-    def __str__(self):              # __unicode__ on Python 2
+    def __str__(self):
+        """
+        User's string representation.
+        """
         return self.email
 
     def has_perm(self, perm, obj=None):
