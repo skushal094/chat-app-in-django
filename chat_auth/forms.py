@@ -38,7 +38,7 @@ class UserAdminCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email',)
+        fields = ('first_name', 'last_name', 'email', 'username')
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -46,6 +46,16 @@ class UserAdminCreationForm(forms.ModelForm):
         if qs.exists():
             raise forms.ValidationError("email is taken")
         return email
+
+    def clean_username(self):
+        """
+        this method will ensure that the username entered is unique.
+        """
+        username = self.cleaned_data.get('username')
+        qs = User.objects.filter(username=username)
+        if qs.exists():
+            raise forms.ValidationError("username is taken")
+        return username
 
     def clean_password2(self):
         # Check that the two password entries match

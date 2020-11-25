@@ -60,7 +60,7 @@ class User(AbstractBaseUser):
     # custom fields
     first_name = models.CharField(max_length=64, null=True, blank=True)
     last_name = models.CharField(max_length=64, null=True, blank=True)
-    username = models.CharField(max_length=64)
+    username = models.CharField(max_length=64, unique=True)
 
     # common fields
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
