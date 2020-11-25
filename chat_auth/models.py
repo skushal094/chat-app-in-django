@@ -57,6 +57,16 @@ class User(AbstractBaseUser):
     admin = models.BooleanField(default=False)  # a superuser
     # notice the absence of a "Password field", that is built in.
 
+    # custom fields
+    first_name = models.CharField(max_length=64, null=True, blank=True)
+    last_name = models.CharField(max_length=64, null=True, blank=True)
+    username = models.CharField(max_length=64)
+
+    # common fields
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []  # Email & Password are required by default.
 
