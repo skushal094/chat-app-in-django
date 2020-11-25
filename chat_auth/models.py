@@ -5,39 +5,50 @@ from django.contrib.auth.models import (
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, password=None):
+    def create_user(self, email, username, password=None):
         """
         Creates and saves a User with the given email and password.
         """
         if not email:
             raise ValueError('Users must have an email address')
+        if not username:
+            raise ValueError('Users must have a username')
+
+        if self.model.objects.filter(email=email):
+            raise ValueError('Email is taken already.')
+
+        if self.model.objects.filter(username=username):
+            raise ValueError('Username is taken already.')
 
         user = self.model(
             email=self.normalize_email(email),
         )
 
+        user.username = username
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_staffuser(self, email, password):
+    def create_staffuser(self, email, username, password):
         """
         Creates and saves a staff user with the given email and password.
         """
         user = self.create_user(
             email,
+            username=username,
             password=password,
         )
         user.staff = True
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password):
+    def create_superuser(self, email, username, password):
         """
         Creates and saves a superuser with the given email and password.
         """
         user = self.create_user(
             email,
+            username=username,
             password=password,
         )
         user.staff = True
@@ -68,7 +79,7 @@ class User(AbstractBaseUser):
     is_deleted = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []  # Email & Password are required by default.
+    REQUIRED_FIELDS = ['username']  # Email & Password are required by default.
 
     objects = UserManager()
 
