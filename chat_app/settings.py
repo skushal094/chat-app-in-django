@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -134,6 +135,8 @@ STATIC_URL = '/static/'
 
 LOGIN_URL = '/auth/login'
 LOGIN_REDIRECT_URL = "/chat"
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 # https://xxx-cook-book.gitbooks.io/django-cook-book/content/Logs/Handlers/FileHandler/timed-rotating-file-handler.html
 LOGGING = {
