@@ -86,6 +86,10 @@ class User(AbstractBaseUser):
     updated_at = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)
 
+    # security
+    password_reset_request_at = models.DateTimeField(blank=True, null=True)
+    password_reset_at = models.DateTimeField(blank=True, null=True)
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']  # Email & Password are required by default.
 
