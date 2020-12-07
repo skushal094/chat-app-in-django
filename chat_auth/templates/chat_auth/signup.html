@@ -1,0 +1,20 @@
+{% extends 'chat_auth/base_auth.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+<title>Chat app - Sign Up</title>
+{% endblock %}
+
+
+{% block body %}
+<form class="form-signin" method="post">
+    {% csrf_token %}
+    <img class="mb-4" src="{% static 'chat_auth/img/favicons/android-chrome-192x192.png' %}" alt="" width="72"
+         height="72">
+    <h1 class="h3 mb-3 font-weight-normal">Please Register</h1>
+    {{ form|crispy }}
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+    <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
+</form>
+{% endblock %}
