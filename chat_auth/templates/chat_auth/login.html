@@ -27,19 +27,19 @@
     <!--    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus-->
     <!--           autocomplete="false">-->
     {{ form.username }}
-<!--    <label for="inputPassword" class="sr-only">Password</label>-->
-<!--    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required-->
-<!--           autocomplete="false">-->
-  {{ form.password }}
+    <!--    <label for="inputPassword" class="sr-only">Password</label>-->
+    <!--    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required-->
+    <!--           autocomplete="false">-->
+    {{ form.password }}
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     <input type="hidden" name="next" value="{{ next }}">
     <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
 </form>
 <script>
-  document.getElementById("id_username").className += " form-control";
-  document.getElementById("id_username").placeholder = "Email";
-  document.getElementById("id_username").type = "email";
-  document.getElementById("id_password").className += " form-control m-b-30";
-  document.getElementById("id_password").placeholder = "Password";
+    document.getElementById("id_username").className += " form-control";
+    document.getElementById("id_username").placeholder = "Email";
+    document.getElementById("id_username").type = "email";
+    document.getElementById("id_password").className += " form-control m-b-30";
+    document.getElementById("id_password").placeholder = "Password";
 </script>
 {% endblock %}
