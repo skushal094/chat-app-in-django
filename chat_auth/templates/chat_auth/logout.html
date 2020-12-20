@@ -1,0 +1,18 @@
+{% extends 'chat_auth/base_auth.html' %}
+{% load static %}
+
+{% block title %}
+<title>Chat app - Logout</title>
+{% endblock %}
+
+
+{% block body %}
+<div style="max-width: 330px; margin: auto;">
+    <img class="mb-4" src="{% static 'chat_auth/img/favicons/android-chrome-192x192.png' %}" alt="" width="72"
+         height="72">
+    <h3 class="h3 mb-3 font-weight-normal">You are successfully logged out.</h3>
+    <h6 class="h6 mb-3 font-weight-normal">Thank you for using our web site.</h6>
+    <a class="related-widget-wrapper-link" href="{% url 'login' %}">Sign in again here</a>
+    <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
+</div>
+{% endblock %}
