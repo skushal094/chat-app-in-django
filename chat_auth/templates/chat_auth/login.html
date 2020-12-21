@@ -1,0 +1,45 @@
+{% extends 'chat_auth/base_auth.html' %}
+{% load static %}
+
+{% block title %}
+<title>Chat app - Login</title>
+{% endblock %}
+
+
+{% block body %}
+<form class="form-signin" method="post">
+    {% csrf_token %}
+    <img class="mb-4" src="{% static 'chat_auth/img/favicons/android-chrome-192x192.png' %}" alt="" width="72"
+         height="72">
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    {% if form.errors %}
+    <p style="color: red;">Your username and password didn't match. Please try again.</p>
+    {% endif %}
+    {% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+        please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+    {% endif %}
+    <!--    <label for="inputEmail" class="sr-only">Email Address</label>-->
+    <!--    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus-->
+    <!--           autocomplete="false">-->
+    {{ form.username }}
+    <!--    <label for="inputPassword" class="sr-only">Password</label>-->
+    <!--    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required-->
+    <!--           autocomplete="false">-->
+    {{ form.password }}
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    <input type="hidden" name="next" value="{{ next }}">
+    <p class="mt-5 mb-3 text-muted">&copy; {% now 'Y' %}</p>
+</form>
+<script>
+    document.getElementById("id_username").className += " form-control";
+    document.getElementById("id_username").placeholder = "Email";
+    document.getElementById("id_username").type = "email";
+    document.getElementById("id_password").className += " form-control m-b-30";
+    document.getElementById("id_password").placeholder = "Password";
+</script>
+{% endblock %}
