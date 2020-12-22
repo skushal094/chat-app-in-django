@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'channels',
     'chat',
     'chat_auth',
+    'chat_logger',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -51,6 +52,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # Custom middlewares
+    'chat_logger.middleware.log_errors_to_db_middleware.Log5XXErrorsToDatabaseMiddleware',
 ]
 
 ROOT_URLCONF = 'chat_app.urls'
