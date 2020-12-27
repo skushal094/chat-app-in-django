@@ -1,7 +1,10 @@
 import traceback
 from datetime import datetime
+import json
+from contextlib import suppress
 import pytz
 from django.utils.deprecation import MiddlewareMixin
+from chat_logger.models import Log5XXError
 
 
 class Log5XXErrorsToDatabaseMiddleware(MiddlewareMixin):
@@ -17,15 +20,21 @@ class Log5XXErrorsToDatabaseMiddleware(MiddlewareMixin):
         :param exception: Exception object
         :return: None
         """
-        print(str(exception))
-        traceback.print_tb(exception.__traceback__)
-        print(exception.__class__.__name__)
-        print(datetime.now(tz=pytz.UTC))
-        print(request.method)
-        print(request.body.decode())
-        print(request.get_raw_uri())
-        print(request.headers)
-        print(request.is_ajax())
-        print(request.is_secure())
-        print(request.scheme)
+        log = Log5XXError()
+        log.exception = str(exception)
+        with suppress(Exception):
+            log.exception_traceback = "".join(
+                traceback.format_exception(etype=type(exception), value=exception, tb=exception.__traceback__))
+            log.exception_class = exception.__class__.__name__
+        log.time = datetime.now(tz=pytz.UTC)
+        log.request_method = request.method
+        with suppress(Exception):
+            log.request_body = request.body.decode()
+        with suppress(Exception):
+            log.request_headers = json.dumps(dict(request.headers))
+        log.request_is_ajax = request.is_ajax()
+        log.request_is_secure = request.is_secure()
+        log.request_scheme = request.scheme
+        with suppress(Exception):
+            log.save()
         return
