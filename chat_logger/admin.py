@@ -15,6 +15,7 @@ class Log5XXErrorAdmin(admin.ModelAdmin):
     list_filter = ('status', 'time')
     date_hierarchy = 'time'
     ordering = ('-time', )
+    actions = ["mark_resolved"]
     search_fields = ('exception_class', 'exception')
     readonly_fields = (
         'exception_class', 'exception_traceback', 'exception',
@@ -38,6 +39,11 @@ class Log5XXErrorAdmin(admin.ModelAdmin):
         }),
     )
     # radio_fields = {'status': admin.VERTICAL}
+
+    def mark_resolved(self, request, queryset):
+        queryset.update(status="1")  # This will mark the error(s) as resolved.
+
+    mark_resolved.short_description = "Mark selected errors as resolved."
 
 
 admin.site.register(models.Log5XXError, Log5XXErrorAdmin)
